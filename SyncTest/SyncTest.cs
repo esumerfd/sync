@@ -5,20 +5,28 @@ public class SyncTest
     [Fact]
     public void Should_sync_a_string()
     {
-        var syncSource = new DataSourceString
+        var syncSource = new DataSource<string>
         {
-            Source = new List<string> { "A" },
-            //compare = new StringCompare(),
+            Source = new List<string> { "A", "B" },
         };
-        var syncTarget = new DataTargetString
-        {
-            //target = new List<DataSourceString>(),
-        };
+        var syncTarget = new DataTarget<string>();
 
         Sync<string>.OneWay(syncSource, syncTarget);
 
-        Console.WriteLine($"Target: {syncTarget.Value}");
+        Assert.Equal(new List<string> { "A", "B" }, syncTarget.Value);
+    }
 
-        Assert.Equal(new List<string> { "A" }, syncTarget.Value);
+    [Fact]
+    public void Should_sync_a_int()
+    {
+        var syncSource = new DataSource<int>
+        {
+            Source = new List<int> { 1, 2 },
+        };
+        var syncTarget = new DataTarget<int>();
+
+        Sync<int>.OneWay(syncSource, syncTarget);
+
+        Assert.Equal(new List<int> { 1, 2 }, syncTarget.Value);
     }
 }
