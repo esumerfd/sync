@@ -1,10 +1,10 @@
 namespace SyncFramework;
 
-public class DataSource<T> : IDataSource<T>
+public class DataSource<TX> : IDataSource<TX>
 {
-    List<T> _sourceData = new List<T>();
+    List<TX> _sourceData = new List<TX>();
 
-    public List<T> Source { set { _sourceData = value; } }
+    public List<TX> Source { set { _sourceData = value; } }
 
     public IEnumerator GetEnumerator()
     {

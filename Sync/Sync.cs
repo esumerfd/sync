@@ -1,39 +1,37 @@
 namespace SyncFramework;
 
-public class Sync<T>
+public class Sync<TX, TY>
 {
-    public static void OneWay(IDataSource<T> source, IDataTarget<T> target)
+    public static void OneWay(IDataSource<TX> source, IDataTarget<TY> target, IDataConverter<TX, TY> converter)
     {
-        new Sync<T>(source, target).Run();
+        new Sync<TX, TY>(source, target, converter).Run();
     }
 
-    IDataSource<T> _dataSource;
-    IDataTarget<T> _dataTarget;
+    IDataSource<TX> _dataSource;
+    IDataTarget<TY> _dataTarget;
+    IDataConverter<TX, TY> _dataConverter;
 
-    public Sync(IDataSource<T> source, IDataTarget<T> target)
+    public Sync(IDataSource<TX> source, IDataTarget<TY> target, IDataConverter<TX, TY> converter)
     {
         _dataSource = source;
         _dataTarget = target;
+        _dataConverter = converter;
     }
 
     void Run()
     {
         Traverse(_dataSource, (item) => 
         { 
-            _dataTarget.Convert(item);
+            var convertedItem = _dataConverter.Convert(item);
+            _dataTarget.Write(convertedItem);
         });
     }
 
-    void Traverse(IDataSource<T> source, Action<T> callback)
+    void Traverse(IDataSource<TX> source, Action<TX> callback)
     {
         foreach (var item in _dataSource)
         {
-            callback((T)item);
+            callback((TX)item);
         }
-    }
-
-    bool IsDifferent(IDataSource<T> source, IDataTarget<T> target)
-    {
-        return true;
     }
 }

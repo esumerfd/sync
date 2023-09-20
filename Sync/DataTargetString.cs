@@ -1,13 +1,13 @@
 namespace SyncFramework;
 
-public class DataTarget<T> : IDataTarget<T>
+public class DataTarget<TY> : IDataTarget<TY>
 {
-    List<T> _targetData = new List<T>();
+    List<TY> _targetData = new List<TY>();
 
-    public List<T> Value { get { return _targetData; } }
+    public List<TY> Value { get { return _targetData; } }
 
-    public void Convert(T value)
+    public void Write(TY item)
     {
-        _targetData.Add((T)value);
+        _targetData.Add(item);
     }
 }
