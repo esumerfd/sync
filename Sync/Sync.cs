@@ -2,32 +2,64 @@ namespace SyncFramework;
 
 public class Sync<TX, TY>
 {
-    public static void OneWay(IDataSource<TX> source, IDataTarget<TY> target, IDataConverter<TX, TY> converter)
+    public static void OneWay(
+            IDataSource<TX> source,
+            IDataTarget<TY> target,
+            //IDataTargetExplorer<TY> targetExplorer,
+            IDataConverter<TX, TY> converter)
     {
-        new Sync<TX, TY>(source, target, converter).Run();
+        new Sync<TX, TY>(source, target, /*targetExplorer,*/ converter).Run();
     }
 
     IDataSource<TX> _dataSource;
     IDataTarget<TY> _dataTarget;
+    //IDataTargetExplorer<TY> _dataTargetExplorer;
     IDataConverter<TX, TY> _dataConverter;
 
-    public Sync(IDataSource<TX> source, IDataTarget<TY> target, IDataConverter<TX, TY> converter)
+    public Sync(IDataSource<TX> source,
+            IDataTarget<TY> target,
+            //IDataTargetExplorer<TY> targetExplorer,
+            IDataConverter<TX, TY> converter)
     {
         _dataSource = source;
         _dataTarget = target;
+        //_dataTargetExplorer = targetExplorer;
         _dataConverter = converter;
     }
 
     void Run()
     {
-        Traverse(_dataSource, (item) => 
+        var traverse = new TraverseList<TX>(_dataSource);
+        traverse.Traverse((item) => 
         { 
             var convertedItem = _dataConverter.Convert(item);
-            _dataTarget.Write(convertedItem);
+
+            //if (!_dataTargetExplorer.Exists(convertedItem)
+                //&& _dataTargetExplorer.Changed(convertedItem))
+            //{
+
+                _dataTarget.Write(convertedItem);
+            //}
         });
     }
 
-    void Traverse(IDataSource<TX> source, Action<TX> callback)
+}
+
+public interface IDataTraverse<TX>
+{
+    void Traverse(Action<TX> callback);
+}
+
+public class TraverseList<TX> : IDataTraverse<TX>
+{
+    IDataSource<TX> _dataSource;
+
+    public TraverseList(IDataSource<TX> dataSource)
+    {
+        _dataSource = dataSource;
+    }
+
+    public void Traverse(Action<TX> callback)
     {
         foreach (var item in _dataSource)
         {

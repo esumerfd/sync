@@ -1,6 +1,6 @@
 namespace SyncFramework;
 
-public class DataSource<TX> : IDataSource<TX>
+public class DataSourceList<TX> : IDataSource<TX>
 {
     List<TX> _sourceData = new List<TX>();
 

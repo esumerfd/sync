@@ -2,8 +2,12 @@
 
 # Interfaces
 
+Started:
 - IDataSource
 - IDataTarget
+- IDataConvert
+
+Pending:
 - IDataSetKey
 - IDataKey
 - IDataValidation
@@ -14,7 +18,6 @@
 - IDataUpdate
 - IDataDelete
 - IDataCompare
-- IDataConvert
 - IDataAudit
 - IDataPerformance
 
