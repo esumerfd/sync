@@ -1,15 +1,16 @@
 namespace SyncFramework;
 
-public interface IMetaDataNode
+public class MetaDataNode
 {
-    (Type, Type) Converter { get; set; }
-    Type Source { get; set; }
-    Type Target { get; set; }
-}
+    // Convert from a source item to a target item
+    public (Type, Type) Converter { get; set; }
 
-public class MetaDataNode : IMetaDataNode
-{
-    (Type, Type) IMetaDataNode.Converter { get; set; }
-    Type IMetaDataNode.Source { get; set; }
-    Type IMetaDataNode.Target { get; set; }
+    // A sequence of source items
+    public Type Source { get; set; }
+
+    // A sequence of target items.
+    public Type Target { get; set; }
+
+    // Recurse to next layer of data structure to sync
+    public MetaDataNode Node;
 }

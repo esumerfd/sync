@@ -37,7 +37,7 @@ public class SyncTest
     [Fact]
     public void Should_acccept_meta_data_about_sync()
     {
-        var syncMetaData = new SyncMetaData
+        var metaData = new MetaData
         {
             Traverse = typeof(TraverseList<int>),
             Root = new MetaDataNode
@@ -48,6 +48,8 @@ public class SyncTest
             }
         };
 
+        var sync = new Sync(metaData);
+        sync.OneWay();
     }
 
     [Fact(Skip="not written yet")]
