@@ -7,7 +7,7 @@ public class MetaDataTest
     {
         var metaData = new MetaData<int, string>
         {
-            Traverser = new TraverseList<int>(),
+            Traverser = new TraverseList<int, string>(),
             Root = new MetaDataNode<int, string>
             {
                 Converter = DataConverter.Factory<int, string>(),

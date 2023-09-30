@@ -9,7 +9,7 @@ public class Sync<TX, TY>
     {
         new Sync<TX, TY>(new MetaData<TX, TY>
         {
-            Traverser = new TraverseList<TX>(),
+            Traverser = new TraverseList<TX, TY>(),
             Root = new MetaDataNode<TX, TY>
             {
                 Converter = converter,
@@ -33,11 +33,29 @@ public class Sync<TX, TY>
 
     void Run()
     {
-        var source = _metaData.Root.Source;
-        _metaData.Traverser.Traverse(source, (TX item) =>
+        var traverser = _metaData.Traverser;
+
+        var rootSource = _metaData.Root.Source;
+        var rootTarget = _metaData.Root.Target;
+        var converter = _metaData.Root.Converter;
+        var existence = _metaData.Root.Existence;
+        var changed = _metaData.Root.Changed;
+
+        traverser.Traverse(rootSource, rootTarget, (TX item, IDataTarget<TY> target) =>
         {
-            var convertedItem = _metaData.Root.Converter.Convert(item);    
-            _metaData.Root.Target.Write(convertedItem);
+            var convertedItem = converter.Convert(item);    
+            if (!existence.Exists(convertedItem))
+            {
+                target.Write(convertedItem);
+            }
+            else
+            {
+                var originalItem = target.Get(convertedItem);
+                if (changed.Changed(originalItem, convertedItem))
+                {
+                    target.Update(convertedItem);
+                }
+            }
         });
     }
 }
