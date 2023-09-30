@@ -37,18 +37,18 @@ public class SyncTest
     [Fact]
     public void Should_acccept_meta_data_about_sync()
     {
-        var metaData = new MetaData
+        var metaData = new MetaData<int, string>
         {
-            Traverse = typeof(TraverseList<int>),
-            Root = new MetaDataNode
+            Traverse = new TraverseList<int>(),
+            Root = new MetaDataNode<int, string>
             {
-                Converter = (typeof(int), typeof(string)),
-                Source = typeof(DataSourceList<int>),
-                Target = typeof(DataTargetList<string>),
+                Converter = DataConverter.Factory<int, string>(),
+                Source = new DataSourceList<int>(),
+                Target = new DataTargetList<string>(),
             }
         };
 
-        var sync = new Sync(metaData);
+        var sync = new Sync<int, string>(metaData);
         sync.OneWay();
     }
 

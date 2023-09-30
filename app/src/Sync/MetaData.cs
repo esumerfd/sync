@@ -1,7 +1,7 @@
 namespace SyncFramework;
 
-public class MetaData
+public class MetaData<TX, TY>
 {
-    public Type Traverse = typeof(TraverseNoOp<int>);
-    public MetaDataNode Root;
+    public IDataTraverse<TX> Traverse = new TraverseNoOp<TX>();
+    public MetaDataNode<TX, TY>? Root;
 }

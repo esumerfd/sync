@@ -2,6 +2,6 @@ namespace SyncFramework;
 
 public interface IDataTraverse<TX>
 {
-    void Traverse(Action<TX> callback);
+    void Traverse(IDataSource<TX> dataSource, Action<TX> callback);
 }
 

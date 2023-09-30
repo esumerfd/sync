@@ -1,5 +1,5 @@
 namespace SyncFramework;
 
-public interface IDataSource<T> : IEnumerable
+public interface IDataSource<TX> : IEnumerable<TX>
 {
 }

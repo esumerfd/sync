@@ -2,16 +2,9 @@ namespace SyncFramework;
 
 public class TraverseList<TX> : IDataTraverse<TX>
 {
-    IDataSource<TX> _dataSource;
-
-    public TraverseList(IDataSource<TX> dataSource)
+    public void Traverse(IDataSource<TX> dataSource, Action<TX> callback)
     {
-        _dataSource = dataSource;
-    }
-
-    public void Traverse(Action<TX> callback)
-    {
-        foreach (var item in _dataSource)
+        foreach (var item in dataSource)
         {
             callback((TX)item);
         }

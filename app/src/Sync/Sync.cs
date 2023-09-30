@@ -1,19 +1,5 @@
 namespace SyncFramework;
 
-public class Sync
-{
-    MetaData _metaData;
-
-    public Sync(MetaData metaData)
-    {
-        _metaData = metaData;
-    }
-
-    public void OneWay()
-    {
-    }
-}
- 
 public class Sync<TX, TY>
 {
     public static void OneWay(
@@ -24,9 +10,20 @@ public class Sync<TX, TY>
         new Sync<TX, TY>(source, target, converter).Run();
     }
 
-    IDataSource<TX> _dataSource;
-    IDataTarget<TY> _dataTarget;
-    IDataConverter<TX, TY> _dataConverter;
+    MetaData<TX, TY> _metaData = new MetaData<TX,TY>();
+
+    public Sync(MetaData<TX, TY> metaData)
+    {
+        _metaData = metaData;
+    }
+
+    public void OneWay()
+    {
+    }
+
+    IDataSource<TX> _dataSource = new DataSourceNoOp<TX>();
+    IDataTarget<TY> _dataTarget = new DataTargetNoOp<TY>();
+    IDataConverter<TX, TY> _dataConverter = new DataConverterNoOp<TX, TY>();
 
     public Sync(IDataSource<TX> source,
             IDataTarget<TY> target,
@@ -39,8 +36,8 @@ public class Sync<TX, TY>
 
     void Run()
     {
-        var traverse = new TraverseList<TX>(_dataSource);
-        traverse.Traverse((item) => 
+        var traverse = new TraverseList<TX>();
+        traverse.Traverse(_dataSource, (item) => 
         { 
             var convertedItem = _dataConverter.Convert(item);
 

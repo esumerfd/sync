@@ -21,6 +21,14 @@ public class DataConverter
     }
 }
 
+public class DataConverterNoOp<TX, TY> : IDataConverter<TX, TY>
+{
+    public TY Convert(TX value)
+    {
+        return (TY)System.Convert.ChangeType(value, typeof(TY))!;
+    }
+}
+
 public class DataConverterString : IDataConverter<string, string>
 {
     public string Convert(string value)

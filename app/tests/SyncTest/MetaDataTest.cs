@@ -5,16 +5,16 @@ public class MetaDataTest
     [Fact]
     public void Should_declare()
     {
-        var metaData = new MetaData
+        var metaData = new MetaData<int, string>
         {
-            Traverse = typeof(TraverseList<int>),
-            Root = new MetaDataNode
+            Traverse = new TraverseList<int>(),
+            Root = new MetaDataNode<int, string>
             {
-                Converter = (typeof(int), typeof(string)),
-                Source = typeof(DataSourceList<int>),
-                Target = typeof(DataTargetList<string>),
+                Converter = DataConverter.Factory<int, string>(),
+                Source = new DataSourceList<int>(),
+                Target = new DataTargetList<string>(),
                 
-                Node = new MetaDataNode(),
+                //Node = new MetaDataNode<int, int>(),
             }
         };
     }
