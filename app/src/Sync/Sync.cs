@@ -7,8 +7,17 @@ public class Sync<TX, TY>
             IDataTarget<TY> target,
             IDataConverter<TX, TY> converter)
     {
-        new Sync<TX, TY>(source, target, converter).Run();
-    }
+        new Sync<TX, TY>(new MetaData<TX, TY>
+        {
+            Traverser = new TraverseList<TX>(),
+            Root = new MetaDataNode<TX, TY>
+            {
+                Converter = converter,
+                Source = source,
+                Target = target,
+            }
+        }).OneWay();
+}
 
     MetaData<TX, TY> _metaData = new MetaData<TX,TY>();
 
@@ -19,37 +28,16 @@ public class Sync<TX, TY>
 
     public void OneWay()
     {
-    }
-
-    IDataSource<TX> _dataSource = new DataSourceNoOp<TX>();
-    IDataTarget<TY> _dataTarget = new DataTargetNoOp<TY>();
-    IDataConverter<TX, TY> _dataConverter = new DataConverterNoOp<TX, TY>();
-
-    public Sync(IDataSource<TX> source,
-            IDataTarget<TY> target,
-            IDataConverter<TX, TY> converter)
-    {
-        _dataSource = source;
-        _dataTarget = target;
-        _dataConverter = converter;
+        Run();
     }
 
     void Run()
     {
-        var traverse = new TraverseList<TX>();
-        traverse.Traverse(_dataSource, (item) => 
-        { 
-            var convertedItem = _dataConverter.Convert(item);
-
-            //if (!_dataTargetExplorer.Exists(convertedItem)
-                //&& _dataTargetExplorer.Changed(convertedItem))
-            //{
-
-                _dataTarget.Write(convertedItem);
-            //}
+        var source = _metaData.Root.Source;
+        _metaData.Traverser.Traverse(source, (TX item) =>
+        {
+            var convertedItem = _metaData.Root.Converter.Convert(item);    
+            _metaData.Root.Target.Write(convertedItem);
         });
     }
-
 }
-
-

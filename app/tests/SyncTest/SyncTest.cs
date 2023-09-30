@@ -2,54 +2,65 @@ namespace SyncFramework;
 
 public class SyncTest
 {
-    [Fact]
-    public void Should_sync_a_string()
+    public class OneWayFixedType
     {
-        var converter = DataConverter.Factory<string, string>();
-
-        var syncSource = new DataSourceList<string>
+        [Fact]
+        public void Should_sync_a_string()
         {
-            Source = new List<string> { "A", "B" },
-        };
-        var syncTarget = new DataTargetList<string>();
+            var converter = DataConverter.Factory<string, string>();
 
-        Sync<string, string>.OneWay(syncSource, syncTarget, converter);
-
-        Assert.Equal(new List<string> { "A", "B" }, syncTarget.Target);
-    }
-
-    [Fact]
-    public void Should_sync_a_int()
-    {
-        var converter = DataConverter.Factory<int, int>();
-
-        var syncSource = new DataSourceList<int>
-        {
-            Source = new List<int> { 1, 2 },
-        };
-        var syncTarget = new DataTargetList<int>();
-
-        Sync<int, int>.OneWay(syncSource, syncTarget, converter);
-
-        Assert.Equal(new List<int> { 1, 2 }, syncTarget.Target);
-    }
-
-    [Fact]
-    public void Should_acccept_meta_data_about_sync()
-    {
-        var metaData = new MetaData<int, string>
-        {
-            Traverse = new TraverseList<int>(),
-            Root = new MetaDataNode<int, string>
+            var syncSource = new DataSourceList<string>
             {
-                Converter = DataConverter.Factory<int, string>(),
-                Source = new DataSourceList<int>(),
-                Target = new DataTargetList<string>(),
-            }
-        };
+                Source = new List<string> { "A", "B" },
+            };
+            var syncTarget = new DataTargetList<string>();
 
-        var sync = new Sync<int, string>(metaData);
-        sync.OneWay();
+            Sync<string, string>.OneWay(syncSource, syncTarget, converter);
+
+            Assert.Equal(new List<string> { "A", "B" }, syncTarget.Target);
+        }
+
+        [Fact]
+        public void Should_sync_a_int()
+        {
+            var converter = DataConverter.Factory<int, int>();
+
+            var syncSource = new DataSourceList<int>
+            {
+                Source = new List<int> { 1, 2 },
+            };
+            var syncTarget = new DataTargetList<int>();
+
+            Sync<int, int>.OneWay(syncSource, syncTarget, converter);
+
+            Assert.Equal(new List<int> { 1, 2 }, syncTarget.Target);
+        }
+    }
+
+    public class OneWayMetaData
+    {
+        [Fact]
+        public void Should_acccept_meta_data_about_sync()
+        {
+            var syncSource = new DataSourceList<int> { Source = new List<int> { 1, 2 } };
+            var syncTarget = new DataTargetList<string>();
+
+            var metaData = new MetaData<int, string>
+            {
+                Traverser = new TraverseList<int>(),
+                Root = new MetaDataNode<int, string>
+                {
+                    Converter = DataConverter.Factory<int, string>(),
+                    Source = syncSource,
+                    Target = syncTarget,
+                }
+            };
+
+            var sync = new Sync<int, string>(metaData);
+            sync.OneWay();
+
+            Assert.Equal(new List<string> { "1", "2" }, syncTarget.Target);
+        }
     }
 
     [Fact(Skip="not written yet")]
