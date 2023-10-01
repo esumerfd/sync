@@ -4,6 +4,15 @@ public class DataTargetList<TY> : IDataTarget<TY>
 {
     public List<TY> Target { get; set; } = new List<TY>();
 
+    public DataTargetList()
+    {
+    }
+
+    public DataTargetList(List<TY> list)
+    {
+        Target = list;
+    }
+
     public TY Get(TY item)
     {
         var index = Target.FindIndex(listItem => listItem.Equals(item));

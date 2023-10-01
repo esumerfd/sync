@@ -43,19 +43,41 @@ public class Sync<TX, TY>
 
         traverser.Traverse(rootSource, rootTarget, (TX item, IDataTarget<TY> target) =>
         {
+            var audit = $"item({item}): ";
+
             var convertedItem = converter.Convert(item);    
-            if (!existence.Exists(convertedItem))
+
+            audit += "converted, ";
+
+            var exists = existence.Exists(convertedItem);
+
+            audit += $"exists({exists}), ";
+
+            if (!exists)
             {
                 target.Write(convertedItem);
+
+                audit += "written, ";
             }
             else
             {
                 var originalItem = target.Get(convertedItem);
-                if (changed.Changed(originalItem, convertedItem))
+
+                audit += "got, ";
+
+                var didChange = changed.Changed(originalItem, convertedItem);
+
+                audit += $"changed({didChange}) ";
+
+                if (didChange)
                 {
                     target.Update(convertedItem);
+
+                    audit += "updated";
                 }
             }
+
+            Console.WriteLine($"Audit: {audit}");
         });
     }
 }

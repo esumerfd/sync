@@ -13,8 +13,6 @@ public class MetaDataTest
                 Converter = DataConverter.Factory<int, string>(),
                 Source = new DataSourceList<int>(),
                 Target = new DataTargetList<string>(),
-                
-                //Node = new MetaDataNode<int, int>(),
             }
         };
     }

@@ -139,4 +139,36 @@ public class SyncTest
             });
         } 
     }
+
+    public class OneWayRecursive
+    {
+        [Fact]
+        public void Should_sync_two_layers_with_same_type()
+        {
+            var syncSourceString =  new List<string> { "a", "b" };
+            var syncTargetString =  new List<string>();
+
+            var syncSourceInt =  new List<int> { 1, 2 };
+            var syncTargetInt =  new List<int>();
+
+            var metaData = new MetaData<string, string>
+            {
+                Traverser = new TraverseList<string, string>(),
+                Root = new MetaDataNode<string, string>
+                {
+                    Converter = DataConverter.Factory<string, string>(),
+                    Source = new DataSourceList<string>(syncSourceString),
+                    Target = new DataTargetList<string>(syncTargetString),
+                    Existence = new DataStateString(syncTargetString),
+                    Changed = new DataStateString(syncTargetString),
+                }
+            };
+
+            var sync = new Sync<string, string>(metaData);
+            sync.OneWay();
+
+            Assert.Equal(new List<string> { "a", "b" }, syncTargetString);
+            Assert.Equal(new List<int> { 1, 2 }, syncTargetInt);
+        } 
+    }
 }

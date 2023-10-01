@@ -6,6 +6,15 @@ public class DataSourceList<TX> : IDataSource<TX>
 
     public List<TX> Source { set { _sourceData = value; } }
 
+    public DataSourceList()
+    {
+    }
+
+    public DataSourceList(List<TX> source)
+    {
+        Source = source;
+    }
+
     public IEnumerator<TX> GetEnumerator()
     {
         return _sourceData.GetEnumerator();
