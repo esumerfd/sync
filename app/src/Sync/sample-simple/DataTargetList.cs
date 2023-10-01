@@ -15,7 +15,7 @@ public class DataTargetList<TY> : IDataTarget<TY>
 
     public TY Get(TY item)
     {
-        var index = Target.FindIndex(listItem => listItem.Equals(item));
+        var index = Target.FindIndex(listItem => listItem?.Equals(item) ?? false);
         if (index == -1) throw new KeyNotFoundException();
         return Target[index];
     }
@@ -27,7 +27,7 @@ public class DataTargetList<TY> : IDataTarget<TY>
 
     public void Update(TY item)
     {
-        var index = Target.FindIndex(listItem => listItem.Equals(item));
+        var index = Target.FindIndex(listItem => listItem?.Equals(item) ?? false);
         if (index > -1)
         {
             Target[index] = item;
