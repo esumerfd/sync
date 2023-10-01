@@ -6,6 +6,9 @@ Started:
 - IDataSource
 - IDataTarget
 - IDataConvert
+- IDataTraverse
+- IDataExists
+- IDataChanged
 
 Pending:
 - IDataSetKey
@@ -17,9 +20,9 @@ Pending:
 - IDataCreate
 - IDataUpdate
 - IDataDelete
-- IDataCompare
 - IDataAudit
 - IDataPerformance
+- IDataUpsert
 
 # Classes
 
