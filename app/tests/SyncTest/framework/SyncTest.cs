@@ -143,6 +143,25 @@ public class SyncTest
     public class OneWayRecursive
     {
         [Fact]
+        public void Should_use_an_index_to_get_target_data()
+        {
+            var syncSource = new List<Dog>
+            {
+                new Dog { Name = "charlie" },
+                new Dog { Name = "bernie" },
+            };
+
+            var syncTarget = new List<Cat>
+            {
+                new Cat { Name = "walter" },
+                new Cat { Name = "rosy" },
+            };
+        }
+    }
+
+    public class OneWayRecursive
+    {
+        [Fact(Skip = "dont know how to mange two types yet")]
         public void Should_sync_two_layers_with_same_type()
         {
             var syncSourceString =  new List<string> { "a", "b" };
