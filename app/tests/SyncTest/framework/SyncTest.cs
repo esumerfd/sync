@@ -140,22 +140,38 @@ public class SyncTest
         } 
     }
 
-    public class OneWayRecursive
+    public class OneWayIndexed
     {
         [Fact]
         public void Should_use_an_index_to_get_target_data()
         {
-            var syncSource = new List<Dog>
+            var syncSource = new List<SourceUser>
             {
-                new Dog { Name = "charlie" },
-                new Dog { Name = "bernie" },
+                new SourceUser { Id = 1, Name = "Bernie" },
+                new SourceUser { Id = 2, Name = "Rosy" },
             };
 
-            var syncTarget = new List<Cat>
+            var syncTarget = new List<TargetUser>
             {
-                new Cat { Name = "walter" },
-                new Cat { Name = "rosy" },
+                new TargetUser { Id = "one", Name = "Charlie" },
+                new TargetUser { Id = "two", Name = "Rosy" },
             };
+
+            var metaData = new MetaData<SourceUser, TargetUser>
+            {
+                Traverser = new TraverseList<SourceUser, TargetUser>(),
+                Root = new MetaDataNode<SourceUser, TargetUser>
+                {
+                    Converter = DataConverter.Factory<SourceUser, TargetUser>(),
+                    Source = new DataSourceList<SourceUser>(syncSource),
+                    Target = new DataTargetList<TargetUser>(syncTarget),
+                }
+            };
+
+            var sync = new Sync<SourceUser, TargetUser>(metaData);
+            sync.OneWay();
+
+            Assert.Equal("Charlie", syncTarget[0].Name);
         }
     }
 
