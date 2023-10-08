@@ -41,6 +41,8 @@ public class Sync<TX, TY>
         var existence = _metaData.Root.Existence;
         var changed = _metaData.Root.Changed;
 
+        var upsert = new Upsert<TY>(existence, changed);
+
         traverser.Traverse(rootSource, rootTarget, (TX item, IDataTarget<TY> target) =>
         {
             var audit = $"item({item?.GetType().Name}): ";
@@ -49,33 +51,20 @@ public class Sync<TX, TY>
 
             audit += $"converted({converter.GetType().Name}), ";
 
-            var exists = existence.Exists(convertedItem);
-
-            audit += $"exists({exists}), ";
-
-            if (!exists)
-            {
-                target.Write(convertedItem);
-
-                audit += "written, ";
-            }
-            else
-            {
-                var originalItem = target.Get(convertedItem);
-
-                audit += "got, ";
-
-                var didChange = changed.Changed(originalItem, convertedItem);
-
-                audit += $"changed({didChange}) ";
-
-                if (didChange)
+            upsert.Sync(convertedItem, rootTarget, 
+                create: () =>
                 {
+                    audit += $"exists(true), ";
+                    target.Write(convertedItem);
+                    audit += "written, ";
+                }, 
+                changed: () =>
+                {
+                    audit += $"exists(false), ";
                     target.Update(convertedItem);
-
                     audit += "updated";
                 }
-            }
+            );
 
             Console.WriteLine($"Audit: {audit}");
         });
