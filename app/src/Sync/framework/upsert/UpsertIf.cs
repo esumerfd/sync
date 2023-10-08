@@ -11,18 +11,18 @@ public class UpsertIf<TY> : ISyncUpsert<TY>
         _changed = changed;
     }
 
-    public void Sync(TY convertedItem, IDataTarget<TY> target, Action create, Action changed)
+    public void Sync(TY convertedItem, IDataTarget<TY> target, Action<TY> create, Action<TY> update)
     {
         if (!_existence.Exists(convertedItem))
         {
-            create();
+            create(convertedItem);
         }
         else
         {
             var originalItem = target.Get(convertedItem);
             if (_changed.Changed(originalItem, convertedItem))
             {
-                changed();
+                update(convertedItem);
             }
         }
     }

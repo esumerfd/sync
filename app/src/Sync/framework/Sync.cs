@@ -49,16 +49,16 @@ public class Sync<TX, TY>
             audit += $"converted({converter.GetType().Name}), ";
 
             upsert.Sync(convertedItem, rootTarget, 
-                create: () =>
+                create: (createValue) =>
                 {
                     audit += $"exists(true), ";
-                    target.Write(convertedItem);
+                    target.Write(createValue);
                     audit += "written, ";
                 }, 
-                changed: () =>
+                update: (updateValue) =>
                 {
                     audit += $"exists(false), ";
-                    target.Update(convertedItem);
+                    target.Update(updateValue);
                     audit += "updated";
                 }
             );
