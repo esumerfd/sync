@@ -5,6 +5,7 @@ public class DataConverterTest
     [Fact]
     public void Should_generate_string_converter()
     {
+        DataConverter.Register<string, string>(new DataConverterString());
         var converter = DataConverter.Factory<string, string>();
 
         Assert.IsAssignableFrom<IDataConverter<string, string>>(converter);
@@ -14,6 +15,7 @@ public class DataConverterTest
     [Fact]
     public void Should_generate_int_converter()
     {
+        DataConverter.Register<int, int>(new DataConverterInt());
         var converter = DataConverter.Factory<int, int>();
 
         Assert.IsAssignableFrom<IDataConverter<int, int>>(converter);
@@ -23,6 +25,7 @@ public class DataConverterTest
     [Fact]
     public void Should_generate_int_string_converter()
     {
+        DataConverter.Register<int, string>(new DataConverterIntString());
         var converter = DataConverter.Factory<int, string>();
 
         Assert.IsAssignableFrom<IDataConverter<int, string>>(converter);
@@ -34,11 +37,21 @@ public class DataConverterTest
     [Fact]
     public void Should_generate_string_int_converter()
     {
+        DataConverter.Register<string, int>(new DataConverterStringInt());
         var converter = DataConverter.Factory<string, int>();
 
         Assert.IsAssignableFrom<IDataConverter<string, int>>(converter);
         Assert.IsType<DataConverterStringInt>(converter);
 
         Assert.Equal(1, converter.Convert("1"));
+    }
+
+    [Fact]
+    public void Should_fail_if_converter_does_exist()
+    {
+        Assert.Throws<ArgumentException>(() =>
+        {
+            DataConverter.Factory<Type, Type>();
+        });
     }
 }

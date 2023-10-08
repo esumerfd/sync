@@ -7,17 +7,22 @@ public interface IDataConverter<TX, TY>
 
 public class DataConverter
 {
-    static Dictionary<object, object> _converters = new Dictionary<object, object>
+    static Dictionary<object, object> _converters = new Dictionary<object, object>();
+
+    public static void Register<TX, TY>(IDataConverter<TX, TY> converter)
     {
-        [(typeof(string), typeof(string))] = new DataConverterString(),
-        [(typeof(int), typeof(int))]       = new DataConverterInt(),
-        [(typeof(int), typeof(string))]    = new DataConverterIntString(),
-        [(typeof(string), typeof(int))]    = new DataConverterStringInt(),
-    };
+        _converters.Add((typeof(TX), typeof(TY)), converter);
+    }
 
     public static IDataConverter<TX, TY> Factory<TX, TY>()
     {
-        return (IDataConverter<TX, TY>)_converters[(typeof(TX), typeof(TY))];
+        var found = _converters.TryGetValue((typeof(TX), typeof(TY)), out object? converter);
+        if (!found || converter == null)
+        {
+            throw new ArgumentException($"No converter of type IDataConverter<{typeof(TX)}, {typeof(TY)}>");
+        }
+
+        return (IDataConverter<TX,TY>)converter;
     }
 }
 
@@ -26,37 +31,5 @@ public class DataConverterNoOp<TX, TY> : IDataConverter<TX, TY>
     public TY Convert(TX value)
     {
         return (TY)System.Convert.ChangeType(value, typeof(TY))!;
-    }
-}
-
-public class DataConverterString : IDataConverter<string, string>
-{
-    public string Convert(string value)
-    {
-        return value;
-    }
-}
-
-public class DataConverterInt : IDataConverter<int, int>
-{
-    public int Convert(int value)
-    {
-        return value;
-    }
-}
-
-public class DataConverterIntString : IDataConverter<int, string>
-{
-    public string Convert(int value)
-    {
-        return value.ToString();
-    }
-}
-
-public class DataConverterStringInt : IDataConverter<string, int>
-{
-    public int Convert(string value)
-    {
-        return int.Parse(value);
     }
 }

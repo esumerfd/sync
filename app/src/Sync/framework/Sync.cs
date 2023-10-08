@@ -43,11 +43,11 @@ public class Sync<TX, TY>
 
         traverser.Traverse(rootSource, rootTarget, (TX item, IDataTarget<TY> target) =>
         {
-            var audit = $"item({item}): ";
+            var audit = $"item({item?.GetType().Name}): ";
 
             var convertedItem = converter.Convert(item);    
 
-            audit += "converted, ";
+            audit += $"converted({converter.GetType().Name}), ";
 
             var exists = existence.Exists(convertedItem);
 
