@@ -1,11 +1,11 @@
 namespace SyncFramework;
 
-public class Upsert<TY>
+public class UpsertIf<TY> : ISyncUpsert<TY>
 {
     IDataExists<TY> _existence;
     IDataChanged<TY> _changed;
 
-    public Upsert(IDataExists<TY> existence, IDataChanged<TY> changed)
+    public UpsertIf(IDataExists<TY> existence, IDataChanged<TY> changed)
     {
         _existence = existence;
         _changed = changed;

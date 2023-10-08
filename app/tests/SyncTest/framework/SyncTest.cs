@@ -72,8 +72,7 @@ public class SyncTest
                     Converter = new DataConverterIntString(),
                     Source = syncSource,
                     Target = syncTarget,
-                    Existence = new DataStateString(syncTarget.Target),
-                    Changed = new DataStateString(syncTarget.Target),
+                    Upsert = new UpsertIf<string>(new DataStateString(syncTarget.Target), new DataStateString(syncTarget.Target)),
                 }
             };
 
@@ -97,8 +96,7 @@ public class SyncTest
                     Converter = new DataConverterString(),
                     Source = syncSource,
                     Target = syncTarget,
-                    Existence = new DataStateString(syncTarget.Target),
-                    Changed = new DataStateString(syncTarget.Target),
+                    Upsert = new UpsertIf<string>(new DataStateString(syncTarget.Target), new DataStateString(syncTarget.Target)),
                 }
             };
 
@@ -122,8 +120,7 @@ public class SyncTest
                     Converter = new DataConverterString(),
                     Source = syncSource,
                     Target = syncTarget,
-                    Existence = new DataStateString(syncTarget.Target),
-                    Changed = new DataStateString(syncTarget.Target),
+                    Upsert = new UpsertIf<string>(new DataStateString(syncTarget.Target), new DataStateString(syncTarget.Target)),
                 }
             };
 
@@ -161,7 +158,7 @@ public class SyncTest
                     Converter = new UserConverter(),
                     Source = new DataSourceList<SourceUser>(syncSource),
                     Target = new TargetUserList(syncTarget),
-                    Existence = new TargetUserExists(syncTarget),
+                    Upsert = new UpsertIf<TargetUser>(new TargetUserExists(syncTarget), new DataChangedNoOp<TargetUser>()),
                 }
             };
 
@@ -192,8 +189,7 @@ public class SyncTest
                     Converter = new DataConverterString(),
                     Source = new DataSourceList<string>(syncSourceString),
                     Target = new DataTargetList<string>(syncTargetString),
-                    Existence = new DataStateString(syncTargetString),
-                    Changed = new DataStateString(syncTargetString),
+                    Upsert = new UpsertIf<string>(new DataStateString(syncTargetString), new DataStateString(syncTargetString)),
                 }
             };
 

@@ -38,10 +38,7 @@ public class Sync<TX, TY>
         var rootSource = _metaData.Root.Source;
         var rootTarget = _metaData.Root.Target;
         var converter = _metaData.Root.Converter;
-        var existence = _metaData.Root.Existence;
-        var changed = _metaData.Root.Changed;
-
-        var upsert = new Upsert<TY>(existence, changed);
+        var upsert = _metaData.Root.Upsert;
 
         traverser.Traverse(rootSource, rootTarget, (TX item, IDataTarget<TY> target) =>
         {
