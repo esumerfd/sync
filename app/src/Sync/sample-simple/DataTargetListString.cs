@@ -12,7 +12,7 @@ public class DataTargetListString : IDataTarget<string>
         return Target[index];
     }
 
-    public void Write(string item)
+    public void Create(string item)
     {
         Target.Add(item);
     }

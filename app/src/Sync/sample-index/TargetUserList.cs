@@ -16,7 +16,7 @@ public class TargetUserList : IDataTarget<TargetUser>
         return UserList[index];
     }
 
-    public void Write(TargetUser targetUser)
+    public void Create(TargetUser targetUser)
     {
         UserList.Add(targetUser);
     }

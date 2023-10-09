@@ -9,7 +9,7 @@ namespace SyncFramework;
 public interface IDataTarget<TY>
 {
     public TY Get(TY item);
-    public void Write(TY item);
+    public void Create(TY item);
     public void Update(TY item);
 }
 

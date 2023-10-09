@@ -6,7 +6,7 @@ public class DataTargetListTest
     public void Should_add_an_item()
     {
         var target = new DataTargetList<string>();
-        target.Write("a");
+        target.Create("a");
 
         Assert.Contains("a", target.Target);
     }
@@ -23,7 +23,7 @@ public class DataTargetListTest
     public void Should_get_an_item()
     {
         var target = new DataTargetList<string>();
-        target.Write("a");
+        target.Create("a");
 
         Assert.Equal("a", target.Get("a"));
     }

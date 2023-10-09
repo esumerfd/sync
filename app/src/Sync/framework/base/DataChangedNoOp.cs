@@ -2,7 +2,7 @@ namespace SyncFramework;
 
 public class DataChangedNoOp<TY> : IDataChanged<TY>
 {
-    public bool Changed(TY odds, TY ends)
+    public bool Changed(TY sourceValue, TY targetValue)
     {
         return true;
     }

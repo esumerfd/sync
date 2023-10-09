@@ -2,7 +2,7 @@ namespace SyncFramework;
 
 public interface IDataConverter<TX, TY>
 {
-    TY Convert(TX item);
+    TY Convert(TX value);
 }
 
 public class DataConverter

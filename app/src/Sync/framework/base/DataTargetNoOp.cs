@@ -2,16 +2,16 @@ namespace SyncFramework;
 
 public class DataTargetNoOp<TY> : IDataTarget<TY>
 {
-    public TY Get(TY item)
+    public TY Get(TY value)
     {
-        return item;
+        return value;
     }
 
-    public void Write(TY item)
+    public void Create(TY value)
     {
     }
 
-    public void Update(TY item)
+    public void Update(TY value)
     {
     }
 }

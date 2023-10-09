@@ -2,13 +2,13 @@ namespace SyncFramework;
 
 public class MetaDataNode<TX, TY>
 {
-    // Convert from a source item to a target item
+    // Convert from a source value to a target value
     public IDataConverter<TX, TY> Converter { get; set; } = new DataConverterNoOp<TX, TY>();
 
-    // A sequence of source items
+    // A sequence of source values.
     public IDataSource<TX> Source { get; set; } = new DataSourceNoOp<TX>();
 
-    // A sequence of target items.
+    // A sequence of target values.
     public IDataTarget<TY> Target { get; set; } = new DataTargetNoOp<TY>();
 
     // Manage choice if insert/update

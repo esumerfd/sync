@@ -52,7 +52,7 @@ public class Sync<TX, TY>
                 create: (createValue) =>
                 {
                     audit += $"exists(true), ";
-                    target.Write(createValue);
+                    target.Create(createValue);
                     audit += "written, ";
                 }, 
                 update: (updateValue) =>

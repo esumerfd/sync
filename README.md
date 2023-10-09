@@ -22,7 +22,7 @@ Pending:
 - IDataDelete
 - IDataAudit
 - IDataPerformance
-- IDataUpsert (Create, Changed)
+- IDataUpsert (Create, Update)
 - IDataTransaction (Start, Commit, Rollback)
 
 # Classes

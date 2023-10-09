@@ -6,7 +6,7 @@ public class DataTargetListStringTest
     public void Should_add_an_item()
     {
         var target = new DataTargetListString();
-        target.Write("a");
+        target.Create("a");
 
         Assert.Contains("a", target.Target);
     }
@@ -15,7 +15,7 @@ public class DataTargetListStringTest
     public void Should_throw_if_get_doesnt_find_item()
     {
         var target = new DataTargetListString();
-        target.Write("a");
+        target.Create("a");
 
         Assert.Throws<KeyNotFoundException>(() =>
         {
@@ -29,7 +29,7 @@ public class DataTargetListStringTest
     public void Should_get_an_item(string value)
     {
         var target = new DataTargetListString();
-        target.Write("a");
+        target.Create("a");
 
         Assert.Equal("a", target.Get(value));
     }
@@ -38,7 +38,7 @@ public class DataTargetListStringTest
     public void Should_update_item()
     {
         var target = new DataTargetListString();
-        target.Write("a");
+        target.Create("a");
 
         target.Update("A");
 

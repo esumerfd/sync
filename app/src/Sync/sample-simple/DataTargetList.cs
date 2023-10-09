@@ -20,7 +20,7 @@ public class DataTargetList<TY> : IDataTarget<TY>
         return Target[index];
     }
 
-    public void Write(TY item)
+    public void Create(TY item)
     {
         Target.Add(item);
     }
